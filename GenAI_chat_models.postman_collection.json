@@ -1,0 +1,861 @@
+{
+	"info": {
+		"_postman_id": "2560cbe8-e071-4d5b-8b18-6ef2020e7928",
+		"name": "GenAI_chat_models",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34999229"
+	},
+	"item": [
+		{
+			"name": "S01 - Send a Message",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "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",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"model\": \"llama-3.3-70b-versatile\",\n\"messages\": [{\n    \"role\": \"user\",\n    \"content\": \"Generate Selenium Java code for Salesforce Login\"\n}]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S02 - Test Token Limit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Write Selenium Java code for Salesforce login. Just give me the code and no explanation needed\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"max_tokens\": 100\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S03 - Test Temparature",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are AI Coding assistant\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a java code to sum 2 variables.\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"max_tokens\": 500,\n  \"temperature\": 0.1// use temp between 0.1 - 0.2 at max for coding. \n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S04 - Test Stop",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a story about AI\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"max_tokens\": 1500,\n  \"temperature\" : 1.3,\n  \"stop\" : [\"\\n\"]\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S05 - Captcha",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"model\": \"llama-3.2-90b-vision-preview\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": [\n        {\n          \"type\": \"text\",\n          \"text\": \"Extract the text from this image and keep cases of the character as it is. Return only those characters.Make sure h and n are identified correctly\"\n        },\n        {\n          \"type\": \"image_url\",\n          \"image_url\": { \n            \"url\": \"data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAMsAAAAyCAYAAADyZi/iAAADMUlEQVR42u2cP2jUUBjAS5FDShFuFBHBqZRuIg4dpCBylCIiSLlJpIuzdCkOIuIiDg7dHEoREaQ4iENBikMRKRyHOIgI4uQgQilSSjkO6vfgC4SPl7uX3F3SJr8ffJTmfXn3cs0vyfuTjo0BAAAAAAAAAAAAAABAJTgaAkW2t+h6OB5kQRaOB5AFWaAiXzKyIAuyIAuyIAsnF7IgS+VOLklrSKxJfJU4kOjqz2+6/RqyIEsudYbsV8TJJcVzEj8Cxzu+SMwgC7JUThYpup9hgPCfEwxZkKUyssjmeybNPXat6p2mpjk1idsSbZO7K3ERWZCl9LLIpimJTizlr8TlHvWNS7w21b5HlhxO2lGALKlkeWdS5gLqdHeZ72a/GWQpqSxFCnhcZHGPT6Z4M0W99tHtcRF/d2RBlrxkWTbFzRT1njf7fkAWJC2zLBumeGqAuveQhQ5+afss8usvU3wYEEkc0mdBljLLcpDXVR5ZkOWky3KELFAGWbqDtlfnROJ0THnHlI8f9++f0TDmWXw5+yZtMkP7Jk0d+6Z8d5AOPrIgS5pj6WRY0Xs6sL2fTdr1DO1rmDpaptxOSC4iC7KMShZ79Z8I2Gc+sL3rJm05Q/vs4sh1U/7IlG8gC4xKlk+m2oWAfZ4HyrJo0nYytK/Va9LRLVGxfRqJC8iCLKOQ5YWpdrVP/lnP3ShJllOePsWtFG276VkdXPPkbZm8j8iCLKOQpeG5Mk8n5J7x3In6vWOy4jnhZwPaNesRbSUhd9oz2fg2dEBB8q464ZAFWULqtatv/0jcdR15La9LLMVmy1+lkMUN/W57/HL9mQUnYCx3QretefK3ew0LS9kdzz6/VdZL0b7annN613om8TP0+0QWZImurKG0PcO5/Sbz6gnChOL2rQccx5Kd2xnmGi1kQZao7hv6im0vNqOTNsOJ5q7oDwI+w77y+zDNRKN2+NOI6eR6I3EFWZAlTf2u8/5E7x7Rmqs9Xdk7P4y26EtXTX2Ua+lgQTf231faWtaMHgMzHot79Hrqlt2rdF3tj7nP25F4qaN19by/f2QBAAAAAAAAAAAAAAAAAAAAAAAAADhB/Accvgw1rwER9AAAAABJRU5ErkJggg==\"\n          },\n         \"temperature\": 0.2\n        }\n      ]\n    }\n   \n  ],\n  \"max_tokens\": 500\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S06 - Available Models",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/models",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"models"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S07 - Streaming",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Write a story about AI\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"max_tokens\": 1500,\n  \"stream\": true\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S08 - Nucleus Sampling (Top_p)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Give me the words to express affection\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"max_tokens\": 10,\n  \"top_p\": 0.95\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S09 - Moderation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Give me steps to kill someone\"\n    }\n  ],\n  \"model\": \"llama-guard-3-8b\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S10 - Transcriptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": [
+								"postman-cloud:///1f0121bc-2da5-41b0-97a1-605390e2d8fc",
+								"/Users/babu/Desktop/response.mpga"
+							]
+						},
+						{
+							"key": "model",
+							"value": "whisper-large-v3",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/audio/translations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"audio",
+						"translations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S11 - Convert Swagger to Restassured",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Object</th>",
+							"        <th>Created</th>",
+							"        <th>Model</th>",
+							"        <th>Index</th>",
+							"        <th>Role</th>",
+							"        <th>Content</th>",
+							"        <th>Finish Reason</th>",
+							"        <th>Queue Time</th>",
+							"        <th>Prompt Tokens</th>",
+							"        <th>Prompt Time</th>",
+							"        <th>Completion Tokens</th>",
+							"        <th>Completion Time</th>",
+							"        <th>Total Tokens</th>",
+							"        <th>Total Time</th>",
+							"        <th>System Fingerprint</th>",
+							"        <th>X Groq ID</th>",
+							"    </tr>",
+							"    ",
+							"    <tr>",
+							"        <td>{{id}}</td>",
+							"        <td>{{object}}</td>",
+							"        <td>{{created}}</td>",
+							"        <td>{{model}}</td>",
+							"        <td>{{choices.0.index}}</td>",
+							"        <td>{{choices.0.message.role}}</td>",
+							"        <td>{{choices.0.message.content}}</td>",
+							"        <td>{{choices.0.finish_reason}}</td>",
+							"        <td>{{usage.queue_time}}</td>",
+							"        <td>{{usage.prompt_tokens}}</td>",
+							"        <td>{{usage.prompt_time}}</td>",
+							"        <td>{{usage.completion_tokens}}</td>",
+							"        <td>{{usage.completion_time}}</td>",
+							"        <td>{{usage.total_tokens}}</td>",
+							"        <td>{{usage.total_time}}</td>",
+							"        <td>{{system_fingerprint}}</td>",
+							"        <td>{{x_groq.id}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    var res = pm.response.json();",
+							"    return {response: res};",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Your response must contain only Java code enclosed in a single code block using triple backticks (java ... ). Do not include any additional text explanations. Be a complete and executable Java class. Use only standard and correct imports (e.g., org.testng.Assert, io.restassured.RestAssured). Do not include any additional tests other than a positive test. Add the package as automation.tests. Write comments in the code. Print the output of the API response. Use the @BeforeMethod annotation of TestNG with a hardcoded baseURI.Do not give me anything other than java code\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Generate REST API test cases using Rest Assured (Java, TestNG) for the following API specification: Path: /all, Method: GET, Summary: Get a list of all countries\"\n    }\n  ],\n  \"model\": \"deepseek-r1-distill-llama-70b\",\n  \"temperature\": 0.2,\n  \"max_tokens\": 1500\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "S12 - DOM to Feature",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Extract the below given DOM and provide me all the element with their best XPath for writing selenium code. <input class=\\\"decorativeSubmit\\\" type=\\\"submit\\\" value=\\\"Login\\\">\"\n    }\n  ],\n  \"model\": \"llama-3.3-70b-versatile\",\n  \"temperature\": 0.01\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.groq.com/openai/v1/chat/completions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"groq",
+						"com"
+					],
+					"path": [
+						"openai",
+						"v1",
+						"chat",
+						"completions"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "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",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
